@@ -1,38 +1,17 @@
 import '../styles/styles.css';
-import { FormikErrors, useFormik } from 'formik'
+import { FormikErrors, useFormik } from 'formik';
+import * as Yup from 'yup';
 
-interface FormValues {
-    firstName: string;
-    lastName: string;
-    email: string;
-};
+// interface FormValues {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+// };
 
 export const FormikYupPage = () => {
 
-    const validate = ({ firstName,lastName,email }:FormValues) => {
-        const errors:FormikErrors<FormValues> = {};
-
-        if(!firstName){
-            errors.firstName = 'required';
-        }else if (firstName.length >= 15){
-            errors.firstName = 'Must be 15 characters or less';
-        }
-
-        if(!lastName){
-            errors.lastName = 'required';
-        }else if (lastName.length >= 10 ){
-            errors.lastName = 'Must be 10 characters or less';
-        }
-
-        if (!email) {
-            errors.email = 'Required';
-          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-            errors.email = 'Invalid email address';
-          }
-        return errors;
-    }
-
-    const { handleChange, values, handleSubmit, handleReset, errors, touched, handleBlur } = useFormik({
+    
+    const { handleSubmit, handleReset, errors, touched, getFieldProps } = useFormik({
         initialValues: {
             firstName:'',
             lastName: '',
@@ -41,24 +20,28 @@ export const FormikYupPage = () => {
         onSubmit: (values) => {
             console.log(values)
         },
-        validate
+        validationSchema: Yup.object({
+            firstName:Yup.string().max(15,'Debe tener maximo 15 caracteres').required('Requerido'),
+            lastName:Yup.string().max(15,'Debe tener maximo 15 caracteres').required('Requerido'),
+            email:Yup.string().email('Debe ser email valido').required('Requerido')
+        })
     });
 
   return (
     <div>
-        <h1>Formik yup tutorial</h1>
+        <h1>Formik yup</h1>
 
         <form noValidate onSubmit={handleSubmit}>
             <label htmlFor="firstName">First Name</label>
-            <input autoComplete='off' type="text" name="firstName" onBlur={ handleBlur } id="firstName" placeholder='First Name' onChange={ handleChange } value={ values.firstName } />
+            <input autoComplete='off' placeholder='First Name' type="text" {...getFieldProps('firstName')}  />
             { touched.firstName && errors.firstName && <span> {errors.firstName} </span>}
 
             <label htmlFor="lastName">Last Name</label>
-            <input autoComplete='off' type="text" name="lastName" id="lastName" onBlur={ handleBlur } placeholder='Last Name' onChange={ handleChange } value={ values.lastName } />            
+            <input autoComplete='off' placeholder='Last Name' type="text" {...getFieldProps('lastName')}  />
             { touched.lastName && errors.lastName && <span> {errors.lastName} </span> }
 
             <label htmlFor="email">Email</label>
-            <input autoComplete='off' type="email" name="email" id="email" onBlur={ handleBlur } placeholder='Email' onChange={ handleChange } value={ values.email } />
+            <input autoComplete='off' type="email" placeholder="Email" {...getFieldProps('email')} />
             { touched.email && errors.email && <span> {errors.email} </span> }
 
             <button type='submit'>Submit</button>
