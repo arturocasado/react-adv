@@ -7,6 +7,8 @@ import {
 import { RegisterPage } from '../03-forms/pages/RegisterPage';
 
 import logo from '../logo.svg';
+import { FormikBasicPage } from '../03-forms/pages/FormikBasicPage';
+import { FormikYupPage } from '../03-forms/pages/FormikYupPage';
 
 export const Navigation = () => {
   return (
@@ -17,6 +19,12 @@ export const Navigation = () => {
           <ul>
           <li>
               <NavLink to="/register" activeClassName="nav-active" exact>Registro</NavLink>
+            </li>
+            <li>
+              <NavLink to="/formik-basic" activeClassName="nav-active" exact>Formik basic</NavLink>
+            </li>
+            <li>
+              <NavLink to="/formik-yup" activeClassName="nav-active" exact>Formik yup</NavLink>
             </li>
             <li>
               <NavLink to="/" activeClassName="nav-active" exact>Home</NavLink>
@@ -34,8 +42,14 @@ export const Navigation = () => {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-        <Route path="/register">
+          <Route path="/register">
             <RegisterPage/>
+          </Route>
+          <Route path="/formik-basic">
+            <FormikBasicPage/>
+          </Route>
+          <Route path="/formik-yup">
+            <FormikYupPage/>
           </Route>
           <Route path="/about">
             <h1>About</h1>
