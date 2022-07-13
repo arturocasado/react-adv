@@ -1,3 +1,4 @@
+export * from './DynamicForm';
 export * from './FormikAbstractaction';
 export * from './FormikBasicPage';
 export * from './FormikComponents';
